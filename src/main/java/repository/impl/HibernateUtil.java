@@ -17,13 +17,9 @@ public class HibernateUtil {
     public static SessionFactory getSessionFactory() {
         if (sessionFactory == null) {
             try {
-                Configuration configuration = new Configuration().configure();
-                configuration.addAnnotatedClass(Region.class);
-                configuration.addAnnotatedClass(Post.class);
-                configuration.addAnnotatedClass(Writer.class);
-                StandardServiceRegistryBuilder builder = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties());
-                sessionFactory = configuration.buildSessionFactory(builder.build());
-
+                Configuration cfg = new Configuration().configure();
+                sessionFactory = cfg.buildSessionFactory();
+                sessionFactory.openSession();
             } catch (Exception e) {
                 System.out.println("Исключение!" + e);
             }
