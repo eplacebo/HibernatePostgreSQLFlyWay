@@ -33,7 +33,7 @@ public class Writer implements Serializable {
     private String lastname;
 
     @NonNull
-    @OneToMany(cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "id_writer")
     private List<Post> posts = new ArrayList<>();
 
