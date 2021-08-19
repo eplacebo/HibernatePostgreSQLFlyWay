@@ -20,11 +20,8 @@ import static prototype.WriterPrototype.writerPrototype;
 @ExtendWith(MockitoExtension.class)
 class WriterServiceTest {
 
-    @InjectMocks
-    WriterService writerService;
-
     @Mock
-    WriterRepositoryImpl writerRepository;
+    WriterService writerService;
 
     @Mock
     List<Writer> listWriters;
@@ -44,14 +41,14 @@ class WriterServiceTest {
         Writer writer = writerService.getWriter(444L);
         assertNotNull(writer);
         assertEquals("test", writerService.getWriter(444L).getFirstname());
-        verify(writerRepository, times(2)).getById(any());
+        verify(writerService, times(2)).getWriter(any());
     }
 
     @Test
     void saveWriter() {
         when(writerService.saveWriter(any())).thenReturn(writerPrototype());
         writerService.saveWriter(writerPrototype());
-        verify(writerRepository, times(1)).save(requestCaptorWriter.capture());
+        verify(writerService, times(1)).saveWriter(requestCaptorWriter.capture());
         assertNotNull(requestCaptorWriter.getValue());
         assertEquals(writerPrototype().getFirstname(), requestCaptorWriter.getValue().getFirstname());
     }
@@ -61,14 +58,14 @@ class WriterServiceTest {
         when(writerService.deleteWriter((anyLong()))).thenReturn(true);
         boolean b = writerService.deleteWriter(444L);
         assertTrue(b);
-        verify(writerRepository, times(1)).deleteById(anyLong());
+        verify(writerService, times(1)).deleteWriter(anyLong());
     }
 
     @Test
     void getAllWriters() {
         when(writerService.getAllWriters()).thenReturn(listWriters);
         assertNotNull(writerService.getAllWriters());
-        verify(writerRepository, times(1)).getAll();
+        verify(writerService, times(1)).getAllWriters();
     }
 
     @Test
@@ -77,6 +74,6 @@ class WriterServiceTest {
         PostService postService = new PostService();
         Writer writer = writerService.updateWriter(writerPrototype());
         assertNotEquals("D", writer.getFirstname());
-        verify(writerRepository, times(1)).update(any());
+        verify(writerService, times(1)).updateWriter(any());
     }
 }

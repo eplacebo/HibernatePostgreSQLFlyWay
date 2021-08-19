@@ -20,11 +20,8 @@ import static prototype.PostPrototype.postPrototype;
 @ExtendWith(MockitoExtension.class)
 public class PostServiceTest {
 
-    @InjectMocks
-    PostService postService;
-
     @Mock
-    PostRepositoryImpl postRepository;
+    PostService postService;
 
     @Mock
     List<Post> listPost;
@@ -44,14 +41,14 @@ public class PostServiceTest {
         Post post = postService.getPost(555L);
         assertNotNull(post);
         assertEquals("test", postService.getPost(555L).getContent());
-        verify(postRepository, times(2)).getById(any());
+        verify(postService, times(2)).getPost(any());
     }
 
     @Test
     void savePost() {
         when(postService.savePost(any())).thenReturn(postPrototype());
         postService.savePost(postPrototype());
-        verify(postRepository, times(1)).save(requestCaptorPost.capture());
+        verify(postService, times(1)).savePost(requestCaptorPost.capture());
         assertNotNull(requestCaptorPost.getAllValues());
         assertEquals(postPrototype().getContent(), requestCaptorPost.getValue().getContent());
     }
@@ -61,14 +58,14 @@ public class PostServiceTest {
         when(postService.deletePost(anyLong())).thenReturn(true);
         boolean b = postService.deletePost(555L);
         assertTrue(b);
-        verify(postRepository, times(1)).deleteById(anyLong());
+        verify(postService, times(1)).deletePost(anyLong());
     }
 
     @Test
     void getAllPost() {
         when(postService.getAllPosts()).thenReturn(listPost);
         assertNotNull(postService.getAllPosts());
-        verify(postRepository, times(1)).getAll();
+        verify(postService, times(1)).getAllPosts();
     }
 
     @Test
@@ -77,7 +74,7 @@ public class PostServiceTest {
         Post post = new Post("D");
         post = postService.updatePost(postPrototype());
         assertNotEquals("D", post.getContent());
-        verify(postRepository, times(1)).update(any());
+        verify(postService, times(1)).updatePost(any());
     }
 }
 

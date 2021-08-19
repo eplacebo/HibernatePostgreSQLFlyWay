@@ -11,6 +11,11 @@ public class RegionService {
 
     RegionRepository regionRepository = new RegionRepositoryImpl();
 
+
+    public RegionService() {
+        this.regionRepository = regionRepository;
+    }
+
     public Region getRegion(Long id) {
         return regionRepository.getById(id);
     }

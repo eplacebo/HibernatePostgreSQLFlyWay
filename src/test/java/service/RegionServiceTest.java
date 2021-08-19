@@ -21,11 +21,9 @@ import static prototype.RegionPrototype.regionPrototype;
 @ExtendWith(MockitoExtension.class)
 class RegionServiceTest {
 
-    @InjectMocks
+    @Mock
     RegionService regionService;
 
-    @Mock
-    RegionRepositoryImpl regionRepository;
 
     @Captor
     ArgumentCaptor<Region> requestCaptorRegion = ArgumentCaptor.forClass(Region.class);
@@ -43,14 +41,14 @@ class RegionServiceTest {
         assertNotNull(region);
         assertEquals(regionPrototype().getId(),region.getId());
         assertEquals(regionPrototype().getName(),region.getName());
-        verify(regionRepository, times(1)).getById(any());
+        verify(regionService, times(1)).getRegion(any());
     }
 
     @Test
     void saveRegion() {
         when(regionService.saveRegion(any())).thenReturn(regionPrototype());
         regionService.saveRegion(any());
-        verify(regionRepository, times(1)).save(requestCaptorRegion.capture());
+        verify(regionService, times(1)).saveRegion(requestCaptorRegion.capture());
         assertNotNull(requestCaptorRegion.getAllValues());
     }
 
@@ -59,7 +57,7 @@ class RegionServiceTest {
         when(regionService.deleteRegion(anyLong())).thenReturn(true);
         boolean b = regionService.deleteRegion(666L);
         assertTrue(b);
-        verify(regionRepository, times(1)).deleteById(anyLong());
+        verify(regionService, times(1)).deleteRegion(anyLong());
     }
 
     @Test
@@ -68,7 +66,7 @@ class RegionServiceTest {
         list.add(0,regionPrototype());
         when(regionService.getAllRegions()).thenReturn(list);
         assertNotNull(regionService.getAllRegions().get(0));
-        verify(regionRepository,times(1)).getAll();
+        verify(regionService,times(1)).getAllRegions();
     }
 
     @Test
@@ -77,6 +75,6 @@ class RegionServiceTest {
         Region region = new Region( "D");
         region= regionService.updateRegion(regionPrototype());
         assertNotEquals("D",region.getName());
-        verify(regionRepository,times(1)).update(any());
+        verify(regionService,times(1)).updateRegion(any());
     }
 }

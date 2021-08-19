@@ -7,8 +7,11 @@ import repository.impl.PostRepositoryImpl;
 import java.util.List;
 
 public class PostService {
-
     PostRepository postRepository = new PostRepositoryImpl();
+
+    public PostService() {
+        this.postRepository = postRepository;
+    }
 
     public Post getPost(Long id) {
         return postRepository.getById(id);

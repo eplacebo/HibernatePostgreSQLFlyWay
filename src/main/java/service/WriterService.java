@@ -10,6 +10,12 @@ import java.util.List;
 public class WriterService {
     WriterRepository writerService = new WriterRepositoryImpl();
 
+    public WriterService() {
+        this.writerService = writerService;
+    }
+
+
+
     public Writer getWriter(Long id) {
         return writerService.getById(id);
     }
